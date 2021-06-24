@@ -1,4 +1,4 @@
-package taskTracker.taskGroup;
+package taskTracker.taskgroup;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

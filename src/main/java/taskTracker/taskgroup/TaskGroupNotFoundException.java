@@ -1,4 +1,4 @@
-package taskTracker.taskGroup;
+package taskTracker.taskgroup;
 
 public class TaskGroupNotFoundException extends RuntimeException {
   TaskGroupNotFoundException(Long id) {

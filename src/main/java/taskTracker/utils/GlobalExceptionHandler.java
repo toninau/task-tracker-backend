@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import taskTracker.task.TaskNotFoundException;
-import taskTracker.taskGroup.TaskGroupNotFoundException;
+import taskTracker.taskgroup.TaskGroupNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;

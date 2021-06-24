@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import taskTracker.taskGroup.TaskGroup;
+import taskTracker.taskgroup.TaskGroup;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
