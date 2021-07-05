@@ -27,4 +27,7 @@ public class AppUser implements Serializable {
   @NotEmpty
   @Column(nullable = false)
   private String password;
+
+  //TODO: users task groups
+  //TEST
 }
