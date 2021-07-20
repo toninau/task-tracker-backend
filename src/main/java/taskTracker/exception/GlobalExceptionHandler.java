@@ -23,6 +23,13 @@ public class GlobalExceptionHandler {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
 
+  @ExceptionHandler(IllegalStateException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  ExceptionResponse usernameTaken(HttpServletRequest req, IllegalStateException e) {
+    return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
+  }
+
   @ExceptionHandler(ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
