@@ -1,5 +1,6 @@
 package taskTracker.appuser;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class AppUser implements UserDetails {
 
   @NotEmpty
   @Column(nullable = false)
+  @JsonIgnore
   private String password;
 
   //TODO: users task groups
