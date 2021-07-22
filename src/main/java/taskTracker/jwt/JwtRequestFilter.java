@@ -1,12 +1,13 @@
 package taskTracker.jwt;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import taskTracker.appuser.AppUserService;
 
@@ -25,27 +26,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   private JwtTokenUtil jwtTokenUtil;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  FilterChain chain)
-      throws ServletException, IOException {
+  protected void doFilterInternal(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain) throws ServletException, IOException {
 
-    final String requestTokenHeader = request.getHeader("Authorization");
-
+    String jwtToken = getJwtTokenFromRequest(request);
     String username = null;
-    String jwtToken = null;
 
-    if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-      jwtToken = requestTokenHeader.substring(7);
+    if (jwtToken != null) {
       try {
         username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-      } catch (IllegalArgumentException e) {
-        System.out.println("Unable to get JWT Token");
-      } catch (ExpiredJwtException e) {
-        System.out.println("JWT Token has expired");
+      } catch (JwtException e) {
+        System.out.println("invalid token");
       }
-    } else {
-      logger.warn("JWT Token does not begin with Bearer String");
     }
 
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -58,6 +52,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
       }
     }
+
     chain.doFilter(request, response);
+  }
+
+  private String getJwtTokenFromRequest(HttpServletRequest request) {
+    final String bearerToken = request.getHeader("Authorization");
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+      return bearerToken.substring(7);
+    }
+    return null;
   }
 }

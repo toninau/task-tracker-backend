@@ -14,7 +14,8 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
-  public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+  //1 hour
+  private final long jwtExpirationInMillis = 3600000;
   @Value("${jwt.secret}")
   private String secret;
 
@@ -42,13 +43,17 @@ public class JwtTokenUtil {
 
   public String generateToken(UserDetails userDetails) {
     Map<String, Object> claims = new HashMap<>();
-    return doGenerateToken(claims, userDetails.getUsername());
+    return createToken(claims, userDetails.getUsername());
   }
 
-  private String doGenerateToken(Map<String, Object> claims, String subject) {
-    return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-        .signWith(SignatureAlgorithm.HS512, secret).compact();
+  private String createToken(Map<String, Object> claims, String subject) {
+    return Jwts.builder()
+        .setClaims(claims)
+        .setSubject(subject)
+        .setIssuedAt(new Date(System.currentTimeMillis()))
+        .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMillis))
+        .signWith(SignatureAlgorithm.HS256, secret)
+        .compact();
   }
 
   public Boolean validateToken(String token, UserDetails userDetails) {
