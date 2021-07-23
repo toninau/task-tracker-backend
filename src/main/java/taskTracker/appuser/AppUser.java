@@ -31,6 +31,11 @@ public class AppUser implements UserDetails {
   @JsonIgnore
   private String password;
 
+  public AppUser(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
+
   //TODO: users task groups
 
   @Override
