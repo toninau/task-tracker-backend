@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import taskTracker.appuser.AppUserNotFoundException;
 import taskTracker.task.TaskNotFoundException;
 import taskTracker.taskgroup.TaskGroupNotFoundException;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler({TaskGroupNotFoundException.class, TaskNotFoundException.class})
+  @ExceptionHandler({TaskGroupNotFoundException.class, TaskNotFoundException.class, AppUserNotFoundException.class})
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
   ExceptionResponse notFoundHandler(HttpServletRequest req, RuntimeException e) {
