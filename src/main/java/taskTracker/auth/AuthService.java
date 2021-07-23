@@ -1,6 +1,5 @@
 package taskTracker.auth;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskTracker.appuser.AppUser;
+import taskTracker.appuser.AppUserDetails;
 import taskTracker.appuser.AppUserRepository;
 
 import java.util.Optional;
@@ -43,7 +43,8 @@ public class AuthService {
       Authentication auth = authenticationProvider.authenticate(
           new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
       );
-      return (AppUser) auth.getPrincipal();
+      AppUserDetails userDetails = (AppUserDetails) auth.getPrincipal();
+      return userDetails.getAppUser();
     } catch (Exception e) {
       throw new BadCredentialsException(e.getMessage());
     }

@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import taskTracker.appuser.AppUser;
+import taskTracker.appuser.AppUserDetails;
 import taskTracker.jwt.JwtTokenUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/auth")
@@ -24,7 +22,7 @@ public class AuthController {
   @ResponseStatus(HttpStatus.CREATED)
   public AuthResponse register(@RequestBody AuthRequest authRequest) {
     AppUser appUser = authService.registerUser(authRequest);
-    AuthResponse authResponse = new AuthResponse(jwtTokenUtil.generateToken(appUser));
+    AuthResponse authResponse = new AuthResponse(jwtTokenUtil.generateToken(new AppUserDetails(appUser)));
     return authResponse;
   }
 
@@ -32,17 +30,15 @@ public class AuthController {
   @ResponseStatus(HttpStatus.OK)
   public AuthResponse login(@RequestBody AuthRequest authRequest) {
     AppUser appUser = authService.loginUser(authRequest);
-    AuthResponse authResponse = new AuthResponse(jwtTokenUtil.generateToken(appUser));
+    AuthResponse authResponse = new AuthResponse(jwtTokenUtil.generateToken(new AppUserDetails(appUser)));
     return authResponse;
   }
 
   @GetMapping("/me")
   @ResponseStatus(HttpStatus.OK)
-  public Map<String, Object> me(Authentication authentication) {
-    AppUser appUser = (AppUser) authentication.getPrincipal();
-    Map<String, Object> fields = new HashMap<>();
-    fields.put("id", appUser.getId());
-    fields.put("username", appUser.getUsername());
-    return fields;
+  public AppUser me(Authentication authentication) {
+    AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = userDetails.getAppUser();
+    return appUser;
   }
 }

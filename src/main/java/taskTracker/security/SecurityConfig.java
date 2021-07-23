@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import taskTracker.appuser.AppUserService;
+import taskTracker.appuser.AppUserDetailsService;
 import taskTracker.jwt.JwtRequestFilter;
 
 @Configuration
@@ -19,7 +19,7 @@ import taskTracker.jwt.JwtRequestFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  private AppUserService appUserService;
+  private AppUserDetailsService appUserDetailsService;
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
   @Autowired
@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public DaoAuthenticationProvider daoAuthenticationProvider() {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
     provider.setPasswordEncoder(bCryptPasswordEncoder);
-    provider.setUserDetailsService(appUserService);
+    provider.setUserDetailsService(appUserDetailsService);
     return provider;
   }
 }
