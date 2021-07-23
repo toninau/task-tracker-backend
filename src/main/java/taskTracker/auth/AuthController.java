@@ -24,5 +24,11 @@ public class AuthController {
     return authResponse;
   }
 
-
+  @PostMapping("/login")
+  @ResponseStatus(HttpStatus.OK)
+  public AuthResponse login(@RequestBody AuthRequest authRequest) {
+    AppUser appUser = authService.loginUser(authRequest);
+    AuthResponse authResponse = new AuthResponse(jwtTokenUtil.generateToken(appUser));
+    return authResponse;
+  }
 }
