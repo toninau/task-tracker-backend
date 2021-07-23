@@ -1,6 +1,7 @@
 package taskTracker.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,14 +20,14 @@ public class GlobalExceptionHandler {
   @ExceptionHandler({TaskGroupNotFoundException.class, TaskNotFoundException.class})
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
-  ExceptionResponse taskGroupNotFoundHandler(HttpServletRequest req, RuntimeException e) {
+  ExceptionResponse notFoundHandler(HttpServletRequest req, RuntimeException e) {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
 
   @ExceptionHandler(IllegalStateException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
-  ExceptionResponse usernameTaken(HttpServletRequest req, IllegalStateException e) {
+  ExceptionResponse usernameTakenHandler(HttpServletRequest req, IllegalStateException e) {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
 
@@ -44,5 +45,12 @@ public class GlobalExceptionHandler {
 
     return new ExceptionResponse(req.getRequestURL().toString(),
         "Validation errors", errorFields);
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ResponseBody
+  ExceptionResponse badCredentialsHandler(HttpServletRequest req, BadCredentialsException e) {
+    return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
 }
