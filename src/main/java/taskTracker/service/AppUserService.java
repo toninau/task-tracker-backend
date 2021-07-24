@@ -3,7 +3,7 @@ package taskTracker.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import taskTracker.appuser.AppUserNotFoundException;
-import taskTracker.appuser.AppUserRepository;
+import taskTracker.repository.AppUserRepository;
 import taskTracker.model.AppUser;
 
 @Service

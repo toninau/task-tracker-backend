@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
-import taskTracker.task.TaskRepository;
+import taskTracker.repository.TaskRepository;
 import taskTracker.taskgroup.TaskGroupNotFoundException;
-import taskTracker.taskgroup.TaskGroupRepository;
+import taskTracker.repository.TaskGroupRepository;
 
 import java.util.List;
 

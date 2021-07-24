@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import taskTracker.model.AppUser;
 import taskTracker.model.AppUserDetails;
-import taskTracker.appuser.AppUserRepository;
+import taskTracker.repository.AppUserRepository;
 import taskTracker.model.AuthRequest;
 
 import java.util.Optional;
