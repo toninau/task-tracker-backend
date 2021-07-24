@@ -3,6 +3,7 @@ package taskTracker.task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import taskTracker.model.Task;
 
 @Service
 public class TaskService {

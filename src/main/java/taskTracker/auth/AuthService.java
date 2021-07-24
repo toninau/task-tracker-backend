@@ -8,9 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import taskTracker.appuser.AppUser;
-import taskTracker.appuser.AppUserDetails;
+import taskTracker.model.AppUser;
+import taskTracker.model.AppUserDetails;
 import taskTracker.appuser.AppUserRepository;
+import taskTracker.model.AuthRequest;
 
 import java.util.Optional;
 

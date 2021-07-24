@@ -1,10 +1,9 @@
-package taskTracker.taskgroup;
+package taskTracker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import taskTracker.task.Task;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

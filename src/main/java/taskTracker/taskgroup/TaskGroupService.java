@@ -7,7 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import taskTracker.task.Task;
+import taskTracker.model.Task;
+import taskTracker.model.TaskGroup;
 import taskTracker.task.TaskRepository;
 
 import java.util.List;
