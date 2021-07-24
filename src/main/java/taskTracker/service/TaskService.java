@@ -1,9 +1,11 @@
-package taskTracker.task;
+package taskTracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import taskTracker.model.Task;
+import taskTracker.task.TaskNotFoundException;
+import taskTracker.task.TaskRepository;
 
 @Service
 public class TaskService {

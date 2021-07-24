@@ -1,4 +1,4 @@
-package taskTracker.taskgroup;
+package taskTracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
 import taskTracker.task.TaskRepository;
+import taskTracker.taskgroup.TaskGroupNotFoundException;
+import taskTracker.taskgroup.TaskGroupRepository;
 
 import java.util.List;
 
