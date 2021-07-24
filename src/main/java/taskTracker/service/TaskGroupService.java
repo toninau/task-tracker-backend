@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
 import taskTracker.repository.TaskRepository;
-import taskTracker.taskgroup.TaskGroupNotFoundException;
+import taskTracker.exception.TaskGroupNotFoundException;
 import taskTracker.repository.TaskGroupRepository;
 
 import java.util.List;
