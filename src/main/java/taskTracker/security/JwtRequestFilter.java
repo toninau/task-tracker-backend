@@ -1,4 +1,4 @@
-package taskTracker.jwt;
+package taskTracker.security;
 
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
