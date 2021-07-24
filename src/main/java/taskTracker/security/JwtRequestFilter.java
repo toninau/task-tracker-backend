@@ -1,4 +1,4 @@
-package taskTracker.jwt;
+package taskTracker.security;
 
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +9,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import taskTracker.appuser.AppUserDetailsService;
-import taskTracker.appuser.AppUserService;
+import taskTracker.service.AppUserDetailsService;
+import taskTracker.util.JwtTokenUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

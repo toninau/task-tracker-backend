@@ -1,4 +1,4 @@
-package taskTracker.taskgroup;
+package taskTracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -7,8 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import taskTracker.task.Task;
-import taskTracker.task.TaskRepository;
+import taskTracker.model.Task;
+import taskTracker.model.TaskGroup;
+import taskTracker.repository.TaskRepository;
+import taskTracker.exception.TaskGroupNotFoundException;
+import taskTracker.repository.TaskGroupRepository;
 
 import java.util.List;
 

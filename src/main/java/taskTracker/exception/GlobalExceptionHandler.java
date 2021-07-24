@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import taskTracker.appuser.AppUserNotFoundException;
-import taskTracker.task.TaskNotFoundException;
-import taskTracker.taskgroup.TaskGroupNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;

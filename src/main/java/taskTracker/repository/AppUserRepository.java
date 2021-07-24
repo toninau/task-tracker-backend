@@ -1,6 +1,7 @@
-package taskTracker.appuser;
+package taskTracker.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import taskTracker.model.AppUser;
 
 import java.util.Optional;
 

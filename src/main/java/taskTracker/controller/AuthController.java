@@ -1,12 +1,15 @@
-package taskTracker.auth;
+package taskTracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import taskTracker.appuser.AppUser;
-import taskTracker.appuser.AppUserDetails;
-import taskTracker.jwt.JwtTokenUtil;
+import taskTracker.model.AppUser;
+import taskTracker.model.AppUserDetails;
+import taskTracker.util.JwtTokenUtil;
+import taskTracker.model.AuthRequest;
+import taskTracker.model.AuthResponse;
+import taskTracker.service.AuthService;
 
 @RestController
 @RequestMapping(path = "/auth")

@@ -1,4 +1,4 @@
-package taskTracker.auth;
+package taskTracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -8,9 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import taskTracker.appuser.AppUser;
-import taskTracker.appuser.AppUserDetails;
-import taskTracker.appuser.AppUserRepository;
+import taskTracker.model.AppUser;
+import taskTracker.model.AppUserDetails;
+import taskTracker.repository.AppUserRepository;
+import taskTracker.model.AuthRequest;
 
 import java.util.Optional;
 
