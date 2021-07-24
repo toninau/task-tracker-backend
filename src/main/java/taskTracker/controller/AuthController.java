@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import taskTracker.model.AppUser;
 import taskTracker.model.AppUserDetails;
-import taskTracker.jwt.JwtTokenUtil;
+import taskTracker.util.JwtTokenUtil;
 import taskTracker.model.AuthRequest;
 import taskTracker.model.AuthResponse;
 import taskTracker.service.AuthService;
