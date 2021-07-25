@@ -1,10 +1,10 @@
 package taskTracker.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -35,6 +35,13 @@ public class TaskGroup implements Serializable {
   )
   @JsonIgnore
   private List<Task> tasks = new ArrayList<>();
+
+  /*@ManyToMany(mappedBy = "memberOf")
+  private List<AppUser> members = new ArrayList<>();*/
+
+  @ManyToOne
+  @JsonBackReference
+  private AppUser owner;
 
   public void setName(String name) {
     this.name = name.trim();

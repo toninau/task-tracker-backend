@@ -2,7 +2,11 @@ package taskTracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import taskTracker.exception.AppUserNotOwnerException;
+import taskTracker.model.AppUser;
+import taskTracker.model.AppUserDetails;
 import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
 import taskTracker.service.TaskGroupService;
@@ -18,7 +22,10 @@ public class TaskGroupController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public TaskGroup createGroup(@RequestBody TaskGroup taskGroup) {
+  public TaskGroup createGroup(@RequestBody TaskGroup taskGroup, Authentication authentication) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+    taskGroup.setOwner(appUser);
     return taskGroupService.createGroup(taskGroup);
   }
 
@@ -44,7 +51,12 @@ public class TaskGroupController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteTaskGroup(@PathVariable Long id) {
+  public void deleteTaskGroup(@PathVariable Long id, Authentication authentication) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+    if (!appUser.getOwnerOf().stream().anyMatch(taskGroup -> taskGroup.getId() == id)) {
+      throw new AppUserNotOwnerException(appUser.getId());
+    }
     taskGroupService.deleteTaskGroup(id);
   }
 }

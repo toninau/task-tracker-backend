@@ -51,4 +51,11 @@ public class GlobalExceptionHandler {
   ExceptionResponse badCredentialsHandler(HttpServletRequest req, BadCredentialsException e) {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
+
+  @ExceptionHandler(AppUserNotOwnerException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  @ResponseBody
+  ExceptionResponse notOwnerHandler(HttpServletRequest req, AppUserNotOwnerException e) {
+    return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
+  }
 }
