@@ -40,7 +40,7 @@ public class AppUser {
       orphanRemoval = true,
       fetch = FetchType.LAZY
   )
-  @JsonManagedReference
+  @JsonIgnore
   private List<TaskGroup> ownerOf = new ArrayList<>();
 
   public AppUser(String username, String password) {

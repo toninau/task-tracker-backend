@@ -3,6 +3,7 @@ package taskTracker.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import taskTracker.exception.AppUserNotOwnerException;
 import taskTracker.model.AppUser;
@@ -51,10 +52,12 @@ public class TaskGroupController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Transactional
   public void deleteTaskGroup(@PathVariable Long id, Authentication authentication) {
     AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
     AppUser appUser = appUserDetails.getAppUser();
-    if (!appUser.getOwnerOf().stream().anyMatch(taskGroup -> taskGroup.getId() == id)) {
+    TaskGroup groupToDelete = taskGroupService.getTaskGroup(id);
+    if (groupToDelete.getOwner().getId() != appUser.getId()) {
       throw new AppUserNotOwnerException(appUser.getId());
     }
     taskGroupService.deleteTaskGroup(id);

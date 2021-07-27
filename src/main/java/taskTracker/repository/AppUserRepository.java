@@ -7,6 +7,6 @@ import taskTracker.model.AppUser;
 import java.util.Optional;
 
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
-  @EntityGraph(attributePaths = {"ownerOf"})
+  //@EntityGraph(attributePaths = {"ownerOf"})
   Optional<AppUser> findByUsername(String username);
 }
