@@ -39,8 +39,7 @@ public class TaskGroup implements Serializable {
   /*@ManyToMany(mappedBy = "memberOf")
   private List<AppUser> members = new ArrayList<>();*/
 
-  @ManyToOne
-  @JsonBackReference
+  @ManyToOne(fetch = FetchType.EAGER)
   private AppUser owner;
 
   public void setName(String name) {
