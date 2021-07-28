@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(IllegalStateException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
-  ExceptionResponse usernameTakenHandler(HttpServletRequest req, IllegalStateException e) {
+  ExceptionResponse illegalStateHandler(HttpServletRequest req, IllegalStateException e) {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
 
