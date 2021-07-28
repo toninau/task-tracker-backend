@@ -13,7 +13,7 @@ public class AppUserService {
   private AppUserRepository appUserRepository;
 
   public AppUser findUser(Long id) {
-    return appUserRepository.findAppUserById(id)
+    return appUserRepository.findAppUserWithMemberOwnerById(id)
         .orElseThrow(() -> new AppUserNotFoundException(id));
   }
 }

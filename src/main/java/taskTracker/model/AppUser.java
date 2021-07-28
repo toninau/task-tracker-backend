@@ -1,10 +1,11 @@
 package taskTracker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -14,10 +15,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@NamedEntityGraph(name = "AppUser.memberOfAndOwnerOf",
+    attributeNodes = {@NamedAttributeNode("memberOf"), @NamedAttributeNode("ownerOf")})
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-//@Data
+@Getter
+@Setter
 public class AppUser implements Serializable {
 
   @Id
@@ -42,30 +46,18 @@ public class AppUser implements Serializable {
   @JsonIgnore
   private Set<TaskGroup> memberOf = new HashSet<>();
 
-  /*@OneToMany(
+  @OneToMany(
       mappedBy = "owner",
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       fetch = FetchType.LAZY
   )
   @JsonIgnore
-  private List<TaskGroup> ownerOf = new ArrayList<>();*/
+  private List<TaskGroup> ownerOf = new ArrayList<>();
 
   public AppUser(String username, String password) {
     this.username = username;
     this.password = password;
-  }
-
-  public Set<TaskGroup> getMemberOf() {
-    return this.memberOf;
-  }
-
-  public String getPassword() {
-    return this.password;
-  }
-
-  public String getUsername() {
-    return this.username;
   }
 
   //TODO: users task groups

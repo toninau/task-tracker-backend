@@ -10,7 +10,6 @@ import taskTracker.model.AppUser;
 import taskTracker.model.AppUserDetails;
 import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
-import taskTracker.repository.TaskGroupRepository;
 import taskTracker.service.AppUserService;
 import taskTracker.service.TaskGroupService;
 
@@ -31,7 +30,7 @@ public class TaskGroupController {
   public TaskGroup createGroup(@RequestBody TaskGroup taskGroup, Authentication authentication) {
     AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
     AppUser appUser = appUserDetails.getAppUser();
-    //taskGroup.setOwner(appUser);
+    taskGroup.setOwner(appUser);
     return taskGroupService.createGroup(taskGroup);
   }
 
@@ -48,34 +47,22 @@ public class TaskGroupController {
       @PathVariable Long appUserId,
       Authentication authentication
   ) {
-    /*AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
-    AppUser appUser = appUserDetails.getAppUser();*/
-    System.out.println("bearer token ^");
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+    TaskGroup groupToAdd = taskGroupService.getTaskGroup(groupId);
 
-    System.out.println("========1======== (only 1 query)\n");
-    TaskGroup group = taskGroupService.getTaskGroup(groupId);
-    System.out.println(group);
-
-
-    /*if (group.getOwner().getId() != appUser.getId()) {
+    if (groupToAdd.getOwner().getId() != appUser.getId()) {
       throw new AppUserNotOwnerException(appUser.getId());
-    }*/
+    } else if (groupToAdd.getOwner().getId() == appUserId) {
+      throw new IllegalStateException(String.format("user: %s, is the owner of the group", appUserId));
+    } else if (groupToAdd.getMembers().stream().anyMatch(a -> a.getId() == appUserId)) {
+      throw new IllegalStateException(String.format("user: %s, is already in group", appUserId));
+    }
 
-    System.out.println("========2======== (only 1 query)\n");
     AppUser appUser2 = appUserService.findUser(appUserId);
-    System.out.println(appUser2);
+    groupToAdd.addMember(appUser2);
 
-
-    System.out.println("========3========\n");
-    //group.getMembers().add(appUser2);
-    group.addMember(appUser2);
-
-    System.out.println("========4========\n");
-    System.out.println(group);
-    System.out.println(appUser2);
-
-    System.out.println("========5========\n");
-    return taskGroupService.createGroup(group);
+    return taskGroupService.updateGroup(groupToAdd);
   }
 
   /*@GetMapping("/{id}/tasks")
@@ -99,9 +86,9 @@ public class TaskGroupController {
     AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
     AppUser appUser = appUserDetails.getAppUser();
     TaskGroup groupToDelete = taskGroupService.getTaskGroup(id);
-    /*if (groupToDelete.getOwner().getId() != appUser.getId()) {
+    if (groupToDelete.getOwner().getId() != appUser.getId()) {
       throw new AppUserNotOwnerException(appUser.getId());
-    }*/
+    }
     taskGroupService.deleteTaskGroup(id);
   }
 }

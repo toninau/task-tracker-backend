@@ -1,25 +1,28 @@
 package taskTracker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@NamedEntityGraph(name = "TaskGroup.members",
-  attributeNodes = {@NamedAttributeNode("members")})
+@NamedEntityGraph(name = "TaskGroup.membersAndOwner",
+    attributeNodes = {
+        @NamedAttributeNode("members"),
+        @NamedAttributeNode("owner")
+
+    })
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-//@Data
+@Getter
+@Setter
 public class TaskGroup implements Serializable {
 
   @Id
@@ -41,11 +44,10 @@ public class TaskGroup implements Serializable {
   private List<Task> tasks = new ArrayList<>();*/
 
   @ManyToMany(mappedBy = "memberOf")
-  @JsonIgnore
   private Set<AppUser> members = new HashSet<>();
 
-  /*@ManyToOne(fetch = FetchType.EAGER)
-  private AppUser owner;*/
+  @ManyToOne
+  private AppUser owner;
 
   public void setName(String name) {
     this.name = name.trim();

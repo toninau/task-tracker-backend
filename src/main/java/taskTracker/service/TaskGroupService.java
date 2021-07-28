@@ -27,6 +27,10 @@ public class TaskGroupService {
     return taskGroupRepository.save(taskGroup);
   }
 
+  public TaskGroup updateGroup(TaskGroup taskGroup) {
+    return taskGroupRepository.save(taskGroup);
+  }
+
   @Transactional
   public Task createTask(Long id, Task task) {
     TaskGroup group = taskGroupRepository.findById(id)

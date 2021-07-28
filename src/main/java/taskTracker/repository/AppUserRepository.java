@@ -11,7 +11,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
   Optional<AppUser> findByUsername(String username);
 
-  @EntityGraph(attributePaths = {"memberOf"})
+  @EntityGraph(value = "AppUser.memberOfAndOwnerOf")
   @Query("select a from AppUser a where a.id = ?1")
-  Optional<AppUser> findAppUserById(Long aLong);
+  Optional<AppUser> findAppUserWithMemberOwnerById(Long aLong);
 }
