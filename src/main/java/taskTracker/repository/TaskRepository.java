@@ -16,5 +16,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
   List<Task> findByTaskGroup(Long id);
   */
 
-  /*List<Task> findByTaskGroup(TaskGroup taskGroup, Pageable pageable);*/
+  List<Task> findByTaskGroup(TaskGroup taskGroup, Pageable pageable);
 }

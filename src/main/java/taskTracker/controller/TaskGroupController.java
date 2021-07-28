@@ -65,13 +65,13 @@ public class TaskGroupController {
     return taskGroupService.updateGroup(groupToAdd);
   }
 
-  /*@GetMapping("/{id}/tasks")
+  @GetMapping("/{id}/tasks")
   @ResponseStatus(HttpStatus.OK)
   public List<Task> getTasks(
       @PathVariable Long id,
       @RequestParam(defaultValue = "0") Integer page) {
     return taskGroupService.groupTasks(id, page);
-  }*/
+  }
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)

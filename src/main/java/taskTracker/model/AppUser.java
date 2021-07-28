@@ -59,6 +59,4 @@ public class AppUser implements Serializable {
     this.username = username;
     this.password = password;
   }
-
-  //TODO: users task groups
 }
