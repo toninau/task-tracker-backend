@@ -28,9 +28,9 @@ public class Task implements Serializable {
   @Column(nullable = false)
   private Boolean finished = false;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  /*@ManyToOne(fetch = FetchType.LAZY)
   @JsonIgnore
-  private TaskGroup taskGroup;
+  private TaskGroup taskGroup;*/
 
   //TODO: end date, start date, modification date
 

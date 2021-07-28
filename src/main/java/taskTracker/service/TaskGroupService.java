@@ -31,17 +31,17 @@ public class TaskGroupService {
   public Task createTask(Long id, Task task) {
     TaskGroup group = taskGroupRepository.findById(id)
         .orElseThrow(() -> new TaskGroupNotFoundException(id));
-    group.addTask(task);
+    //group.addTask(task);
     return task;
   }
 
-  @Transactional
+  /*@Transactional
   public List<Task> groupTasks(Long id, Integer page) {
     TaskGroup group = taskGroupRepository.findById(id)
         .orElseThrow(() -> new TaskGroupNotFoundException(id));
     Pageable pageable = PageRequest.of(page, 5, Sort.by("id").descending());
     return taskRepository.findByTaskGroup(group, pageable);
-  }
+  }*/
 
   public void deleteTaskGroup(Long id) {
     try {

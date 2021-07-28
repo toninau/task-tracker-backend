@@ -8,14 +8,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class AppUser {
+//@Data
+public class AppUser implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,21 +34,38 @@ public class AppUser {
   @JsonIgnore
   private String password;
 
-  /*@ManyToMany
-  private List<TaskGroup> memberOf = new ArrayList<>();*/
+  @ManyToMany
+  @JoinTable(name = "task_group_members",
+      joinColumns = @JoinColumn(name = "app_user_id"),
+      inverseJoinColumns = @JoinColumn(name = "task_group_id")
+  )
+  @JsonIgnore
+  private Set<TaskGroup> memberOf = new HashSet<>();
 
-  @OneToMany(
+  /*@OneToMany(
       mappedBy = "owner",
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       fetch = FetchType.LAZY
   )
   @JsonIgnore
-  private List<TaskGroup> ownerOf = new ArrayList<>();
+  private List<TaskGroup> ownerOf = new ArrayList<>();*/
 
   public AppUser(String username, String password) {
     this.username = username;
     this.password = password;
+  }
+
+  public Set<TaskGroup> getMemberOf() {
+    return this.memberOf;
+  }
+
+  public String getPassword() {
+    return this.password;
+  }
+
+  public String getUsername() {
+    return this.username;
   }
 
   //TODO: users task groups
