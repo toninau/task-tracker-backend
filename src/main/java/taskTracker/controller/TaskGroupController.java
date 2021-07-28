@@ -34,10 +34,28 @@ public class TaskGroupController {
     return taskGroupService.createGroup(taskGroup);
   }
 
-  @PostMapping("/{id}/tasks")
+  @PostMapping("/{groupId}/tasks")
   @ResponseStatus(HttpStatus.CREATED)
-  public Task createTask(@PathVariable Long id, @RequestBody Task task) {
-    return taskGroupService.createTask(id, task);
+  public TaskGroup createTask(
+      @PathVariable Long groupId,
+      @RequestBody Task task,
+      Authentication authentication
+  ) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+
+    TaskGroup taskGroup = taskGroupService.getTaskGroup(groupId);
+
+    if (taskGroup.getOwner().getId() == appUser.getId() ||
+        taskGroup.getMembers().stream().anyMatch(a -> a.getId() == appUser.getId())) {
+      taskGroup.addTask(task);
+    } else {
+      //change exception (403)
+      throw new IllegalStateException("temp message (no access to group)");
+    }
+
+
+    return taskGroupService.updateGroup(taskGroup);
   }
 
   @PutMapping("/{groupId}/members/{appUserId}")

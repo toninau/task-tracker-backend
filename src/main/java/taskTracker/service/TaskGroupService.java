@@ -32,14 +32,6 @@ public class TaskGroupService {
   }
 
   @Transactional
-  public Task createTask(Long id, Task task) {
-    TaskGroup group = taskGroupRepository.findById(id)
-        .orElseThrow(() -> new TaskGroupNotFoundException(id));
-    group.addTask(task);
-    return task;
-  }
-
-  @Transactional
   public List<Task> groupTasks(Long id, Integer page) {
     TaskGroup group = taskGroupRepository.findById(id)
         .orElseThrow(() -> new TaskGroupNotFoundException(id));
