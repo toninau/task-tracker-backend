@@ -13,6 +13,7 @@ import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
 import taskTracker.service.AppUserService;
 import taskTracker.service.TaskGroupService;
+import taskTracker.service.TaskService;
 
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class TaskGroupController {
 
   @Autowired
   private AppUserService appUserService;
+
+  @Autowired
+  private TaskService taskService;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -39,7 +43,7 @@ public class TaskGroupController {
   @PostMapping("/{groupId}/tasks")
   @ResponseStatus(HttpStatus.CREATED)
   @Transactional
-  public TaskGroup createTask(
+  public Task createTask(
       @PathVariable Long groupId,
       @RequestBody Task task,
       Authentication authentication
@@ -53,9 +57,8 @@ public class TaskGroupController {
       throw new NoAccessToGroupException(appUser.getId());
     }
 
-    taskGroup.addTask(task);
-
-    return taskGroupService.updateGroup(taskGroup);
+    task.setTaskGroup(taskGroup);
+    return taskService.createTask(task);
   }
 
   @PutMapping("/{groupId}/members/{appUserId}")
