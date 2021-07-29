@@ -106,8 +106,18 @@ public class TaskGroupController {
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public TaskGroup getTaskGroup(@PathVariable Long id) {
-    return taskGroupService.getTaskGroup(id);
+  @Transactional
+  public TaskGroup getTaskGroup(@PathVariable Long id, Authentication authentication) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+    TaskGroup taskGroup = taskGroupService.getTaskGroup(id);
+
+    if (taskGroup.getOwner().getId() != appUser.getId() &&
+        taskGroup.getMembers().stream().noneMatch(a -> a.getId() == appUser.getId())) {
+      throw new NoAccessToGroupException(appUser.getId());
+    }
+
+    return taskGroup;
   }
 
   @DeleteMapping("/{id}")
