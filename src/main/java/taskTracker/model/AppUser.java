@@ -38,7 +38,7 @@ public class AppUser implements Serializable {
   @JsonIgnore
   private String password;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "task_group_members",
       joinColumns = @JoinColumn(name = "app_user_id"),
       inverseJoinColumns = @JoinColumn(name = "task_group_id")

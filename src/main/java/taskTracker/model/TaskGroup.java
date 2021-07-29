@@ -46,10 +46,10 @@ public class TaskGroup implements Serializable {
   @JsonIgnore
   private List<Task> tasks = new ArrayList<>();
 
-  @ManyToMany(mappedBy = "memberOf")
+  @ManyToMany(mappedBy = "memberOf", fetch = FetchType.LAZY)
   private Set<AppUser> members = new HashSet<>();
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private AppUser owner;
 
   public void setName(String name) {
