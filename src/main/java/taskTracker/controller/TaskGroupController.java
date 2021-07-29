@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import taskTracker.exception.AppUserNotOwnerException;
+import taskTracker.exception.NoAccessToGroupException;
 import taskTracker.model.AppUser;
 import taskTracker.model.AppUserDetails;
 import taskTracker.model.Task;
@@ -27,6 +28,7 @@ public class TaskGroupController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @Transactional
   public TaskGroup createGroup(@RequestBody TaskGroup taskGroup, Authentication authentication) {
     AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
     AppUser appUser = appUserDetails.getAppUser();
@@ -36,6 +38,7 @@ public class TaskGroupController {
 
   @PostMapping("/{groupId}/tasks")
   @ResponseStatus(HttpStatus.CREATED)
+  @Transactional
   public TaskGroup createTask(
       @PathVariable Long groupId,
       @RequestBody Task task,
@@ -43,23 +46,21 @@ public class TaskGroupController {
   ) {
     AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
     AppUser appUser = appUserDetails.getAppUser();
-
     TaskGroup taskGroup = taskGroupService.getTaskGroup(groupId);
 
-    if (taskGroup.getOwner().getId() == appUser.getId() ||
-        taskGroup.getMembers().stream().anyMatch(a -> a.getId() == appUser.getId())) {
-      taskGroup.addTask(task);
-    } else {
-      //change exception (403)
-      throw new IllegalStateException("temp message (no access to group)");
+    if (taskGroup.getOwner().getId() != appUser.getId() &&
+        taskGroup.getMembers().stream().noneMatch(a -> a.getId() == appUser.getId())) {
+      throw new NoAccessToGroupException(appUser.getId());
     }
 
+    taskGroup.addTask(task);
 
     return taskGroupService.updateGroup(taskGroup);
   }
 
   @PutMapping("/{groupId}/members/{appUserId}")
   @ResponseStatus(HttpStatus.OK)
+  @Transactional
   public TaskGroup addMembers(
       @PathVariable Long groupId,
       @PathVariable Long appUserId,
@@ -83,12 +84,24 @@ public class TaskGroupController {
     return taskGroupService.updateGroup(groupToAdd);
   }
 
-  @GetMapping("/{id}/tasks")
+  @GetMapping("/{groupId}/tasks")
   @ResponseStatus(HttpStatus.OK)
+  @Transactional
   public List<Task> getTasks(
-      @PathVariable Long id,
-      @RequestParam(defaultValue = "0") Integer page) {
-    return taskGroupService.groupTasks(id, page);
+      @PathVariable Long groupId,
+      @RequestParam(defaultValue = "0") Integer page,
+      Authentication authentication
+  ) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+    TaskGroup taskGroup = taskGroupService.getTaskGroup(groupId);
+
+    if (taskGroup.getOwner().getId() != appUser.getId() &&
+        taskGroup.getMembers().stream().noneMatch(a -> a.getId() == appUser.getId())) {
+      throw new NoAccessToGroupException(appUser.getId());
+    }
+
+    return taskGroupService.groupTasks(taskGroup, page);
   }
 
   @GetMapping("/{id}")

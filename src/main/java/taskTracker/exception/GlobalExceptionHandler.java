@@ -58,4 +58,11 @@ public class GlobalExceptionHandler {
   ExceptionResponse notOwnerHandler(HttpServletRequest req, AppUserNotOwnerException e) {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
+
+  @ExceptionHandler(NoAccessToGroupException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  @ResponseBody
+  ExceptionResponse noAccessToTaskGroupHandler(HttpServletRequest req, NoAccessToGroupException e) {
+    return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
+  }
 }

@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
 import taskTracker.repository.TaskRepository;
@@ -31,12 +30,9 @@ public class TaskGroupService {
     return taskGroupRepository.save(taskGroup);
   }
 
-  @Transactional
-  public List<Task> groupTasks(Long id, Integer page) {
-    TaskGroup group = taskGroupRepository.findById(id)
-        .orElseThrow(() -> new TaskGroupNotFoundException(id));
+  public List<Task> groupTasks(TaskGroup taskGroup, Integer page) {
     Pageable pageable = PageRequest.of(page, 5, Sort.by("id").descending());
-    return taskRepository.findByTaskGroup(group, pageable);
+    return taskRepository.findByTaskGroup(taskGroup, pageable);
   }
 
   public void deleteTaskGroup(Long id) {
