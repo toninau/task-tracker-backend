@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import taskTracker.model.AppUser;
 import taskTracker.model.Task;
 import taskTracker.model.TaskGroup;
 import taskTracker.repository.TaskRepository;
@@ -13,6 +15,8 @@ import taskTracker.exception.TaskGroupNotFoundException;
 import taskTracker.repository.TaskGroupRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TaskGroupService {
@@ -46,5 +50,13 @@ public class TaskGroupService {
   public TaskGroup getTaskGroup(Long id) {
     return taskGroupRepository.findById(id)
         .orElseThrow(() -> new TaskGroupNotFoundException(id));
+  }
+
+  @Transactional
+  public List<TaskGroup> getUserTaskGroups(AppUser appUser) {
+    List<TaskGroup> groupsByOwner = taskGroupRepository.findByOwner(appUser);
+    List<TaskGroup> groupsByMember = taskGroupRepository.findByMembers(appUser);
+    List<TaskGroup> newList = Stream.concat(groupsByOwner.stream(), groupsByMember.stream()).collect(Collectors.toList());
+    return newList;
   }
 }

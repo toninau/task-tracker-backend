@@ -7,10 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import taskTracker.exception.AppUserNotOwnerException;
 import taskTracker.exception.NoAccessToGroupException;
-import taskTracker.model.AppUser;
-import taskTracker.model.AppUserDetails;
-import taskTracker.model.Task;
-import taskTracker.model.TaskGroup;
+import taskTracker.model.*;
 import taskTracker.service.AppUserService;
 import taskTracker.service.TaskGroupService;
 import taskTracker.service.TaskService;
@@ -121,6 +118,15 @@ public class TaskGroupController {
     }
 
     return taskGroup;
+  }
+
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  public List<TaskGroup> getUserTaskGroups(Authentication authentication) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+    List<TaskGroup> taskGroups = taskGroupService.getUserTaskGroups(appUser);
+    return taskGroups;
   }
 
   @DeleteMapping("/{id}")
