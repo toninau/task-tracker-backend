@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import taskTracker.exception.NoAccessToGroupException;
 import taskTracker.exception.NoAccessToUserException;
 import taskTracker.model.AppUser;
 import taskTracker.model.AppUserDetails;
@@ -26,8 +25,13 @@ public class AppUserController {
 
   @GetMapping("/{userId}")
   @ResponseStatus(HttpStatus.OK)
-  public AppUser getUser(@PathVariable("userId") Long id) {
-    return appUserService.findUser(id);
+  public AppUser getUser(@PathVariable("userId") Long id, Authentication authentication) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+    if (appUser.getId() != id) {
+      throw new NoAccessToUserException(appUser.getId());
+    }
+    return appUser;
   }
 
   //TODO: fetching user information, users groups
