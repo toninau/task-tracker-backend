@@ -16,4 +16,8 @@ public class AppUserService {
     return appUserRepository.findAppUserWithMemberOwnerById(id)
         .orElseThrow(() -> new AppUserNotFoundException(id));
   }
+
+  public void updateUser(AppUser appUser) {
+    appUserRepository.save(appUser);
+  }
 }
