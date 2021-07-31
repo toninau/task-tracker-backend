@@ -32,6 +32,6 @@ public class Task implements Serializable {
   @JsonIgnore
   private TaskGroup taskGroup;
 
-  //TODO: end date, start date, modification date
+  //TODO: end date, start date, modification date, creation date
 
 }

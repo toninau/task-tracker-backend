@@ -18,6 +18,10 @@ public class TaskService {
     return taskRepository.save(task);
   }
 
+  public Task updateTask(Task task) {
+    return taskRepository.save(task);
+  }
+
   public Task findTask(Long id) {
     return taskRepository.findById(id)
         .orElseThrow(() -> new TaskNotFoundException(id));

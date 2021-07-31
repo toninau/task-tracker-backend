@@ -12,6 +12,8 @@ import taskTracker.model.Task;
 import taskTracker.service.TaskGroupService;
 import taskTracker.service.TaskService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping(path = "/tasks")
 public class TaskController {
@@ -21,9 +23,6 @@ public class TaskController {
 
   @Autowired
   private TaskGroupService taskGroupService;
-
-  //TODO: update task, set task finished
-
 
   @GetMapping("/{taskId}")
   @ResponseStatus(HttpStatus.OK)
@@ -38,6 +37,31 @@ public class TaskController {
       throw new NoAccessToGroupException(appUser.getId());
     }
     return task;
+  }
+
+  @PutMapping("/{taskId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void updateTask(
+      @RequestBody Map<String, Boolean> requestBody,
+      @PathVariable("taskId") Long id,
+      Authentication authentication
+  ) {
+    AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+    AppUser appUser = appUserDetails.getAppUser();
+
+    Task task = taskService.findTaskWithOwnerAndMembers(id);
+
+    if (appUser.getId() != task.getTaskGroup().getOwner().getId() &&
+        task.getTaskGroup().getMembers().stream().noneMatch(a -> a.getId() == appUser.getId())) {
+      throw new NoAccessToGroupException(appUser.getId());
+    }
+
+    Boolean finished = requestBody.get("finished");
+
+    if (finished != null) {
+      task.setFinished(finished);
+      taskService.updateTask(task);
+    }
   }
 
   @DeleteMapping("/{taskId}")
