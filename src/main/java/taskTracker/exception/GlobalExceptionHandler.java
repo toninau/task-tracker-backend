@@ -59,10 +59,10 @@ public class GlobalExceptionHandler {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
 
-  @ExceptionHandler(NoAccessToGroupException.class)
+  @ExceptionHandler({NoAccessToGroupException.class, NoAccessToUserException.class})
   @ResponseStatus(HttpStatus.FORBIDDEN)
   @ResponseBody
-  ExceptionResponse noAccessToTaskGroupHandler(HttpServletRequest req, NoAccessToGroupException e) {
+  ExceptionResponse noAccessHandler(HttpServletRequest req, RuntimeException e) {
     return new ExceptionResponse(req.getRequestURL().toString(), e.getMessage());
   }
 }
