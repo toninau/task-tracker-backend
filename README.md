@@ -12,4 +12,4 @@ Spring Boot application with JWT token authentication + docker + postgres
 
 ## Database model
 
-<img alt="database model" src="./assets/task-tracker.png" width="100%">
+<img alt="database model" src="./assets/task-tracker.png" >
